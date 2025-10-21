@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef long long i64;
+typedef long i64;
 
 i64 i64_abs(i64 x);
 i64 i64_gcd(i64 a, i64 b);

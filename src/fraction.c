@@ -34,7 +34,7 @@ Fraction fraction_input(void)
     {
         printf("Enter a fraction (num + den)");
 
-        if (scanf("%lld %lld", &x.num, &x.den) != 2)
+        if (scanf("%ld %ld", &x.num, &x.den) != 2)
         {
             int c;
 
@@ -44,15 +44,13 @@ Fraction fraction_input(void)
 
                 continue;
             }
-
-            if (x.den == 0)
-            {
-                printf("den must be not equal to 0. Please try again. \n");
-                continue;
-            }
-
-            break;
         }
+        if (x.den == 0)
+        {
+            printf("den must be not equal to 0. Please try again. \n");
+            continue;
+        }
+        break;
     }
     return fraction_reduce(x);
 }
@@ -62,11 +60,11 @@ void fraction_print(Fraction x)
     x = fraction_reduce(x);
     if (x.den == 1)
     {
-        printf("%lld", x.num);
+        printf("%ld", x.num);
     }
     else
     {
-        printf("%lld %lld", x.num, x.den);
+        printf("%ld %ld", x.num, x.den);
     }
 }
 
@@ -151,8 +149,8 @@ int fraction_cmp(Fraction a, Fraction b)
     b = fraction_reduce(b);
 
 #if defined(__GNUC__) || defined(__clang__)
-    __int128 left = (__int128)a.num * b.den;
-    __int128 right = (__int128)b.num * a.den;
+    __int8 left = (__int8)a.num * b.den;
+    __int8 right = (__int8)b.num * a.den;
     if (left < right)
         return -1;
     if (left > right)

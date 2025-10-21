@@ -3,49 +3,122 @@
 
 Fraction fraction_normalize(Fraction x)
 {
-
+    if (x.den < 0)
+    {
+        x.den = -x.den;
+        x.num = -x.num;
+    }
+    return x;
 }
 
 Fraction fraction_reduce(Fraction x)
 {
+    x = fraction_normalize(x);
 
+    if (x.num == 0)
+    {
+        x.den = 1;
+        return x;
+    }
+    i64 g = i64_gcd(x.num, x.den);
+    x.num /= g;
+    x.den /= g;
+    return x;
 }
-
 
 Fraction fraction_input(void)
 {
-   
+    Fraction x;
+
+    while (1)
+    {
+        printf("Enter a fraction (num + den)");
+
+        if (scanf("%lld %lld", &x.num, &x.den) != 2)
+        {
+            int c;
+
+            while ((c = getchar()) != '\n' && c != EOF)
+            {
+                printf("invalid input. please try again. \n");
+
+                continue;
+            }
+
+            if (x.den == 0)
+            {
+                printf("den must be not equal to 0. Please try again. \n");
+                continue;
+            }
+
+            break;
+        }
+    }
+    return fraction_reduce(x);
 }
 
 void fraction_print(Fraction x)
 {
-   
+    x = fraction_reduce(x);
+    if (x.den == 1)
+    {
+        printf("%lld", x.num);
+    }
+    else
+    {
+        printf("%lld %lld", x.num, x.den);
+    }
 }
-
 
 Fraction fraction_add(Fraction a, Fraction b)
 {
-   
+    Fraction c;
+
+    c.num = a.num * b.den + b.num * a.den;
+    c.den = a.den * b.den;
+
+    return fraction_reduce(c);
 }
 Fraction fraction_sub(Fraction a, Fraction b)
 {
-   
+    Fraction c;
+    c.num = a.num * b.den - b.num * a.den;
+    c.den = a.den * b.den;
+
+    return fraction_reduce(c);
 }
 Fraction fraction_mul(Fraction a, Fraction b)
 {
-  
+    Fraction c;
+
+    c.num = a.num * b.num;
+    c.den = a.den * b.den;
+
+    return fraction_reduce(c);
 }
 Fraction fraction_div(Fraction a, Fraction b)
 {
-  
-}
+    Fraction c;
 
+    if (b.num == 0)
+    {
+        printf("[WARNING] Fraction is divined by 0, return 0.\n");
+        c.num = 0;
+        c.den = 1;
+        return c;
+    }
+
+    c.num = a.num * b.den;
+    c.den = a.den * b.num;
+
+    return fraction_reduce(c);
+}
 
 int fraction_is_reduced(Fraction x)
 {
     x = fraction_normalize(x);
     if (x.num == 0)
-        return 1; 
+        return 1;
     return i64_gcd(x.num, x.den) == 1;
 }
 
@@ -71,7 +144,6 @@ FractionPair fraction_common_den(Fraction a, Fraction b)
     out.b.den = L;
     return out;
 }
-
 
 int fraction_cmp(Fraction a, Fraction b)
 {
